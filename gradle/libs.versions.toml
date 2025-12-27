@@ -1,0 +1,41 @@
+[versions]
+agp = "8.10.0"
+hivemqMqttClient = "1.3.2"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.1"
+material = "1.12.0"
+constraintlayout = "2.2.1"
+lifecycleLivedataKtx = "2.9.2"
+lifecycleViewmodelKtx = "2.9.2"
+navigationFragment = "2.9.2"
+navigationUi = "2.9.2"
+nettyAll = "4.x.x"
+nettyAllVersion = "4.2.7.Final"
+orgEclipsePahoClientMqttv3 = "1.2.5"
+pahoMqttAndroid = "3.3.5"
+service = "1.1.4"
+
+[libraries]
+hivemq-mqtt-client = { module = "com.hivemq:hivemq-mqtt-client", version.ref = "hivemqMqttClient" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
+lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
+navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
+netty-all = { module = "io.netty:netty-all" }
+netty-all-v427final = { module = "io.netty:netty-all", version.ref = "nettyAllVersion" }
+netty-netty-all = { module = "io.netty:netty-all", version.ref = "nettyAll" }
+org-eclipse-paho-client-mqttv3 = { module = "org.eclipse.paho:org.eclipse.paho.client.mqttv3", version.ref = "orgEclipsePahoClientMqttv3" }
+paho-mqtt-android = { module = "com.github.hannesa2:paho.mqtt.android", version.ref = "pahoMqttAndroid" }
+service = { module = "info.mqtt.android:service", version.ref = "service" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+
