@@ -64,6 +64,7 @@ dependencies {
     implementation libs.hivemq.mqtt.client
     // https://mvnrepository.com/artifact/io.netty/netty-all
     implementation libs.netty.all.v427final
+    implementation libs.gson
 
     implementation libs.paho.mqtt.android
 }
