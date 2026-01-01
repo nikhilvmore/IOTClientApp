@@ -4,7 +4,9 @@ import static androidx.core.content.ContentProviderCompat.requireContext;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -23,8 +25,12 @@ import com.example.myapplication.databinding.ActivityMainBinding;
 //import org.eclipse.paho.android.service.MqttAndroidClient;
 import android.content.Context;
 
-import info.mqtt.android.service.Ack;
-import info.mqtt.android.service.MqttAndroidClient;
+//import info.mqtt.android.service.Ack;
+import org.eclipse.paho.android.service.MqttAndroidClient;
+//import info.mqtt.android.service.MqttAndroidClient;
+import org.eclipse.paho.android.service.MqttAndroidClient;
+// and for other classes, use imports from org.eclipse.paho...
+
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 //import org.eclipse.paho.client.mqttv3.MqttException;
@@ -85,6 +91,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+
+
+        startMqttService();
         // Your MqttHelper logic can remain
         // mqttHelper = new MqttHelper();
         // mqttHelper.connect(this);
@@ -92,10 +101,20 @@ public class MainActivity extends AppCompatActivity {
         // REMOVE all the RecyclerView, dataList, and adapter setup from here
     }
 
+    private void startMqttService() {
+        Intent serviceIntent = new Intent(this, MqttService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(serviceIntent);
+        } else {
+            startService(serviceIntent);
+        }
+    }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mqttHelper.disconnect();
+        //mqttHelper.disconnect();
     }
 
 
