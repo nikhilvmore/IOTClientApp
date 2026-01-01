@@ -38,6 +38,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.content.ContentProvider;
+import com.example.myapplication.MyAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

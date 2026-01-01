@@ -1,34 +1,25 @@
 package com.example.myapplication;
 
+// This class represents a single row of data from the database.
 public class MyData {
-    private String col1, col2, col3, col4, col5;
+    private String machineName;
+    private double temperature;
+    private int speed;
+    private double electricityConsumption;
+    private long timestamp;
 
-    public MyData(String col1, String col2, String col3, String col4, String col5) {
-        this.col1 = col1;
-        this.col2 = col2;
-        this.col3 = col3;
-        this.col4 = col4;
-        this.col5 = col5;
+    public MyData(String machineName, double temperature, int speed, double electricityConsumption, long timestamp) {
+        this.machineName = machineName;
+        this.temperature = temperature;
+        this.speed = speed;
+        this.electricityConsumption = electricityConsumption;
+        this.timestamp = timestamp;
     }
 
     // Add getters for each field
-    public String getCol1() {
-        return col1;
-    }
-
-    public String getCol2() {
-        return col2;
-    }
-
-    public String getCol3() {
-        return col3;
-    }
-
-    public String getCol4() {
-        return col4;
-    }
-
-    public String getCol5() {
-        return col5;
-    }
+    public String getMachineName() { return machineName; }
+    public double getTemperature() { return temperature; }
+    public int getSpeed() { return speed; }
+    public double getElectricityConsumption() { return electricityConsumption; }
+    public long getTimestamp() { return timestamp; }
 }
