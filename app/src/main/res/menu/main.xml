@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- New Menu Item for MQTT Host IP -->
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_set_host"
+        android:title="Set MQTT Host"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        app:showAsAction="never" />
+
+    <!-- New Menu Item for MQTT Topic -->
+    <item
+        android:id="@+id/action_set_topic"
+        android:title="Set MQTT Topic"
+        android:orderInCategory="101"
         app:showAsAction="never" />
 </menu>
+
+

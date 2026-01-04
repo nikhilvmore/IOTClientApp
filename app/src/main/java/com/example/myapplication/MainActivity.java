@@ -49,6 +49,16 @@ import com.example.myapplication.MyAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.view.MenuItem;
+import android.widget.EditText;
+import androidx.appcompat.app.AlertDialog;
+
+import android.view.ViewGroup;
+import android.widget.LinearLayout; // <-- Import LinearLayout
+
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // This part using ViewBinding is the standard for new projects, you can keep yours if you prefer
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -91,14 +100,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
-
         startMqttService();
-        // Your MqttHelper logic can remain
-        // mqttHelper = new MqttHelper();
-        // mqttHelper.connect(this);
-
-        // REMOVE all the RecyclerView, dataList, and adapter setup from here
     }
 
     private void startMqttService() {
@@ -110,26 +112,106 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //mqttHelper.disconnect();
+        // The service will handle its own lifecycle, but if you had a direct helper:
+        // if (mqttHelper != null) mqttHelper.disconnect();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
+    // Inflate the menu to add the "Settings" option
+    // Handle menu item clicks
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    /**
+     * Handles clicks on menu items in the action bar.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Use a switch statement for better readability with multiple menu items.
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_set_host) {
+            showMqttHostDialog();
+            return true;
+        } else if (itemId == R.id.action_set_topic) {
+            showMqttTopicDialog(); // <-- Call the new topic-specific dialog
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Displays a dialog for the user to set the MQTT Broker IP address.
+     */
+    private void showMqttHostDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Set MQTT Broker IP");
+
+        final EditText input = new EditText(this);
+        input.setHint("e.g., 192.168.1.2");
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        // Use the same key as your MqttService to read/write the correct value
+        String currentHost = sharedPreferences.getString("mqtt_host_ip", "192.168.1.2");
+        input.setText(currentHost);
+
+        builder.setView(input);
+
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            String newHostIp = input.getText().toString().trim();
+            if (!newHostIp.isEmpty()) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("mqtt_host_ip", newHostIp);
+                editor.apply();
+                Log.i("Settings", "New MQTT Host IP saved: " + newHostIp);
+                // Inform the user that a restart or reconnect might be needed.
+            }
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
+    /**
+     * Displays a dialog for the user to set the MQTT subscription topic.
+     */
+    private void showMqttTopicDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Set MQTT Topic");
+
+        final EditText input = new EditText(this);
+        input.setHint("e.g., mobile/test");
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        // Use the same key as your MqttService to read/write the correct value
+        String currentTopic = sharedPreferences.getString("mqtt_topic", "mobile/test");
+        input.setText(currentTopic);
+
+        builder.setView(input);
+
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            String newTopic = input.getText().toString().trim();
+            if (!newTopic.isEmpty()) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("mqtt_topic", newTopic);
+                editor.apply();
+                Log.i("Settings", "New MQTT Topic saved: " + newTopic);
+                // Inform the user that a restart or reconnect might be needed.
+            }
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
     }
 
 

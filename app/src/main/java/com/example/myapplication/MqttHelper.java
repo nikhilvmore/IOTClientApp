@@ -13,16 +13,35 @@ import com.hivemq.client.mqtt.MqttClientState;
 import com.hivemq.client.mqtt.mqtt3.Mqtt3AsyncClient;
 import com.hivemq.client.mqtt.mqtt3.message.subscribe.Mqtt3Subscribe;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+
 public class MqttHelper {
 
     private static final String TAG = "MqttHelper";
     private Mqtt3AsyncClient client;
 
+
     public void connect(Context context) {
+
+        // 1. Get SharedPreferences instance
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        // 2. Read the saved IP. Use a default IP if nothing is found.
+        String mqttHost = sharedPreferences.getString("mqtt_host_ip", "192.168.1.2"); // Default IP
+
+        Log.i(TAG, "Connecting to MQTT broker at: " + mqttHost);
+
         client = MqttClient.builder()
                 .useMqttVersion3()
                 .identifier("android-client-" + System.currentTimeMillis())
-                .serverHost("192.168.1.2")
+                .serverHost(mqttHost) // <-- Use the dynamically loaded host IP here
                 .serverPort(1883)
                 .buildAsync();
 
@@ -32,18 +51,25 @@ public class MqttHelper {
                         Log.e(TAG, "Connection failed", throwable);
                     } else {
                         Log.i(TAG, "Connected to MQTT");
-                        subscribeToTopic("mobile/test", context);
-                        // Optional: publish a test message if you want
-                        // publishMessage("mobile/test", "{\"machine-name\":\"Test-Rig-01\", \"temperature\":45.5, \"speed\":1200, \"electricity-consumption\":1.23, \"timestamp\":1672531200}");
+                        // *** The context is passed here to be used for retrieving the topic ***
+                        subscribeToTopic(context);
                     }
                 });
     }
 
-    public void subscribeToTopic(String topic, Context context) {
+    public void subscribeToTopic(Context context) {
+        // 1. Get SharedPreferences instance
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        // 2. Read the saved topic. Use a default topic if nothing is found.
+        String topic = sharedPreferences.getString("mqtt_topic", "mobile/test"); // Default topic
+
+        Log.i(TAG, "Subscribing to topic: " + topic);
+
         client.subscribeWith()
-                .topicFilter(topic)
+                .topicFilter(topic) // <-- Use the dynamically loaded topic here
                 .callback(publish ->
-                        // Call the new method to parse and save the message
+                        // The rest of the logic is unchanged
                         parseAndSaveMessage(new String(publish.getPayloadAsBytes()), context)
                 )
                 .send()
@@ -51,7 +77,7 @@ public class MqttHelper {
                     if (throwable != null) {
                         Log.e(TAG, "Subscription failed", throwable);
                     } else {
-                        Log.i(TAG, "Subscribed to: " + topic);
+                        Log.i(TAG, "Successfully subscribed to: " + topic);
                     }
                 });
     }
