@@ -14,6 +14,15 @@
         android:title="Set MQTT Topic"
         android:orderInCategory="101"
         app:showAsAction="never" />
+
+    <!-- New Menu Item for Publishing a Message -->
+    <item
+        android:id="@+id/action_publish_message"
+        android:title="Publish Message"
+        android:orderInCategory="102"
+        android:icon="@android:drawable/ic_menu_send"
+        app:showAsAction="ifRoom" />
+
 </menu>
 
 
