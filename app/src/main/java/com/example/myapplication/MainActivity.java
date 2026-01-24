@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -60,6 +63,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Start the background MQTT service
         startMqttService();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        }
     }
 
     private void startMqttService() {
@@ -88,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (itemId == R.id.action_publish_message) {
             showPublishMessageDialog();
+            return true;
+        }else if (itemId == R.id.action_view_logs) {
+            startActivity(new Intent(this, LogsActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -22,7 +22,11 @@
         android:orderInCategory="102"
         android:icon="@android:drawable/ic_menu_send"
         app:showAsAction="ifRoom" />
-
+    <item
+        android:id="@+id/action_view_logs"
+        android:title="View Logs"
+        android:orderInCategory="103"
+        app:showAsAction="never" />
 </menu>
 
 
