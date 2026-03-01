@@ -2,6 +2,9 @@ package com.example.myapplication;
 
 // This class represents a single row of data from the database.
 public class MyData {
+    public int machine;
+    public int temp;
+    public int power;
     private String machineName;
     private double temperature;
     private int speed;
@@ -22,4 +25,20 @@ public class MyData {
     public int getSpeed() { return speed; }
     public double getElectricityConsumption() { return electricityConsumption; }
     public long getTimestamp() { return timestamp; }
+
+    public int getMachine() {
+        return 0;
+    }
+
+    public char[] getTemp() {
+        return new char[0];
+    }
+
+    public int getPower() {
+        return 0;
+    }
+
+    public char[] getElectricity() {
+        return new char[0];
+    }
 }

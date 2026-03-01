@@ -30,6 +30,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
 
     /**
      * Reads all entries from the database and returns them as a list of MyData objects.
+     *
      * @return A List of MyData objects.
      */
     public List<MyData> getAllEntries() {
@@ -78,5 +79,32 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
     // onDowngrade is also needed
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
+    }
+
+    public List<MyData> getMessagesByTopic(String topic) {
+        List<MyData> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null, null,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_TIMESTAMP + " DESC"
+        );
+
+        while (cursor.moveToNext()) {
+            list.add(new MyData(
+                    cursor.getString(cursor.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_MACHINE_NAME)),
+                    cursor.getDouble(cursor.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TEMPERATURE)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_SPEED)),
+                    cursor.getDouble(cursor.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_ELECTRICITY_CONSUMPTION)),
+                    cursor.getLong(cursor.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TIMESTAMP))
+            ));
+        }
+        cursor.close();
+        db.close();
+        return list;
     }
 }

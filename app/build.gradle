@@ -46,6 +46,7 @@ android {
             excludes += 'META-INF/io.netty.versions.properties'
             excludes += ['META-INF/INDEX.LIST', 'META-INF/io.netty.versions.properties']
 
+
         }
     }
 
@@ -75,6 +76,14 @@ dependencies {
 
     // For Groovy (build.gradle)
     implementation libs.legacy.support.v4
+
+
+
+        // Ensure you also have ViewPager2
+    implementation libs.viewpager2
+
+
+
 
 
 

@@ -27,6 +27,10 @@
         android:title="View Logs"
         android:orderInCategory="103"
         app:showAsAction="never" />
+<!--    <item-->
+<!--        android:id="@+id/action_add_column"-->
+<!--        android:title="Add Topic Column"-->
+<!--        app:showAsAction="never" />-->
 </menu>
 
 

@@ -34,7 +34,7 @@ public class MqttHelper {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         // 2. Read the saved IP. Use a default IP if nothing is found.
-        String mqttHost = sharedPreferences.getString("mqtt_host_ip", "192.168.1.2"); // Default IP
+        String mqttHost = sharedPreferences.getString("mqtt_host_ip", "192.168.1.4"); // Default IP
 
         Log.i(TAG, "Connecting to MQTT broker at: " + mqttHost);
 
@@ -126,7 +126,7 @@ public class MqttHelper {
 
             // Put the data into ContentValues
             ContentValues values = new ContentValues();
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_MACHINE_NAME, machineName);
+            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_MACHINE_NAME, "Machine A");
             values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TEMPERATURE, temperature);
             values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SPEED, speed);
             values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_ELECTRICITY_CONSUMPTION, electricityConsumption);

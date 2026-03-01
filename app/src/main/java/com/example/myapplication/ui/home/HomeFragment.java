@@ -21,55 +21,39 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Initialize MqttHelper. It's better to do this in onCreate
-        // to avoid re-creating it every time the view is created.
         mqttHelper = new MqttHelper();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+            // Use the simple layout with just buttons
+            View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // Find all buttons
-        final Button buttonStart = root.findViewById(R.id.button_start);
-        final Button buttonStop = root.findViewById(R.id.button_stop);
-        final Button buttonViewList = root.findViewById(R.id.button_view_list);
+            Button buttonStart = root.findViewById(R.id.button_start);
+            Button buttonStop = root.findViewById(R.id.button_stop);
+            Button buttonViewList = root.findViewById(R.id.button_view_list);
 
-        // Set OnClickListener for Start Button
-        buttonStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // The 'getContext()' method provides the necessary Context
+            buttonStart.setOnClickListener(v -> {
                 mqttHelper.connect(getContext());
                 Snackbar.make(v, "MQTT Connection Starting...", Snackbar.LENGTH_SHORT).show();
-            }
-        });
+            });
 
-        // Set OnClickListener for Stop Button
-        buttonStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            buttonStop.setOnClickListener(v -> {
                 mqttHelper.disconnect();
                 Snackbar.make(v, "MQTT Disconnected", Snackbar.LENGTH_SHORT).show();
-            }
-        });
+            });
 
-        // Set OnClickListener for View List Button (as before)
-        buttonViewList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Use the action defined in the navigation graph to move to the list fragment
-                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_list);
-            }
-        });
+            // Use the action ID to navigate to the topic list page
+            // This creates a proper back-stack so you can return to Home
+            buttonViewList.setOnClickListener(v -> {
+                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_topic_list);
+            });
 
-        return root;
+            return root;
     }
 
     @Override
     public void onDestroy() {
-        // It's good practice to ensure disconnection when the fragment is destroyed
-        // to prevent memory leaks.
         super.onDestroy();
         if (mqttHelper != null) {
             mqttHelper.disconnect();

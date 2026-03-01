@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <TextView android:id="@+id/tvMachine" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="M1"/>
+    <TextView android:id="@+id/tvTemp" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.8" android:text="25°C"/>
+    <TextView android:id="@+id/tvSpeed" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.8" android:text="100"/>
+    <TextView android:id="@+id/tvPower" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="On"/>
+    <TextView android:id="@+id/tvTimestamp" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="12:00"/>
+
+    <TextView
+        android:id="@+id/column1"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/column2"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/column3"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/column4"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/column5"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
+</LinearLayout>

@@ -22,23 +22,30 @@ import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    private NavController navController;
 
     // Default configuration (User can override these via UI)
-    private String DEFAULT_HOST = "192.168.1.2";
+    private String DEFAULT_HOST = "192.168.1.4";
     private String DEFAULT_TOPIC = "mobile/test";
+
+    private List<String> activeTopics = new ArrayList<>();
+    private TopicPagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,21 +56,30 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.appBarMain.toolbar);
 
-        DrawerLayout drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
+        // 1. Correct way to get NavController with FragmentContainerView
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment_content_main);
 
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
-                .setOpenableLayout(drawer)
-                .build();
+        if (navHostFragment != null) {
+            navController = navHostFragment.getNavController();
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+            // 2. Define top-level destinations (Drawer hamburger shows here)
+            mAppBarConfiguration = new AppBarConfiguration.Builder(
+                    R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                    .setOpenableLayout(binding.drawerLayout)
+                    .build();
+
+            // 3. Setup UI components
+            NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+            NavigationUI.setupWithNavController(binding.navView, navController);
+        }
+
+        // --- DUPLICATE CODE REMOVED FROM HERE ---
 
         // Start the background MQTT service
         startMqttService();
 
+        // Notification permission check for Android 13+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -71,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
                         new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 101);
             }
         }
+
+       // setupDynamicColumns();
     }
 
     private void startMqttService() {
@@ -104,6 +122,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, LogsActivity.class));
             return true;
         }
+//        else if (itemId == R.id.action_add_column) {
+//            showAddTopicColumnDialog();
+//            return true;
+//        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -184,7 +206,53 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
+        // Use the class-level navController variable initialized in onCreate
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
+    }
+
+    private void setupDynamicColumns() {
+        // 1. Initial topics (Ensure these match machine names in your DB)
+        if (activeTopics.isEmpty()) {
+            activeTopics.add("Machine A");
+            activeTopics.add("Machine B");
+        }
+
+        // 2. Initialize Adapter
+        pagerAdapter = new TopicPagerAdapter(this, activeTopics);
+
+        // FIX: Access via binding.appBarMain.viewPager and binding.appBarMain.tabLayout
+        binding.appBarMain.viewPager.setAdapter(pagerAdapter);
+
+        // 3. Attach TabLayout to ViewPager
+        new TabLayoutMediator(binding.appBarMain.tabLayout, binding.appBarMain.viewPager,
+                (tab, position) -> tab.setText(activeTopics.get(position))
+        ).attach();
+    }
+
+    private void showAddTopicColumnDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add Topic Column");
+        final EditText input = new EditText(this);
+        input.setHint("Topic Name");
+        builder.setView(input);
+        builder.setPositiveButton("Add", (d, w) -> {
+            String newTopic = input.getText().toString().trim();
+            if (!newTopic.isEmpty() && !activeTopics.contains(newTopic)) {
+                activeTopics.add(newTopic);
+
+                // Notify adapter of new data
+                pagerAdapter.notifyItemInserted(activeTopics.size() - 1);
+
+                // Re-attach TabLayoutMediator to refresh the tabs
+//                new TabLayoutMediator(binding.appBarMain.tabLayout, binding.appBarMain.viewPager,
+//                        (tab, position) -> tab.setText(activeTopics.get(position))
+//                ).attach();
+
+                Toast.makeText(this, "Column added for " + newTopic, Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
     }
 }

@@ -11,6 +11,9 @@
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
     <action android:id="@+id/action_nav_home_to_nav_list" app:destination="@id/nav_list" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_topic_list"
+            app:destination="@id/nav_topic_list" />
     </fragment>
 
     <fragment
@@ -29,4 +32,16 @@
     <fragment android:id="@+id/nav_list"
         android:name="com.example.myapplication.ui.list.ListFragment" android:label="5 Column List"
         tools:layout="@layout/fragment_list" />
+
+    <fragment
+        android:id="@+id/fragment_topic_list"
+        android:name="com.example.myapplication.TopicListFragment"
+        android:label="MQTT Topic Lists"
+        tools:layout="@layout/fragment_topic_list" />
+
+    <fragment
+        android:id="@+id/nav_topic_list"
+        android:name="com.example.myapplication.TopicListFragment"
+        android:label="Topic Lists"
+        tools:layout="@layout/fragment_topic_list" />
 </navigation>

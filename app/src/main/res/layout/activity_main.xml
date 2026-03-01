@@ -8,12 +8,14 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
+    <!-- Content: This should be the ONLY non-gravity child -->
     <include
         android:id="@+id/app_bar_main"
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!-- Drawer: This must have layout_gravity="start" -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -22,8 +24,7 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
-    <androidx.recyclerview.widget.RecyclerView android:id="@+id/recyclerView"
-        android:layout_width="0dp" android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- REMOVE THE RECYCLERVIEW FROM HERE! -->
+
 </androidx.drawerlayout.widget.DrawerLayout>

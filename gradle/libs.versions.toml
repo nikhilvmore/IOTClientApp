@@ -19,6 +19,8 @@ orgEclipsePahoAndroidService = "1.1.1"
 orgEclipsePahoClientMqttv3 = "1.2.5"
 pahoMqttAndroid = "3.3.5"
 service = "1.1.4"
+viewpager2 = "1.1.0"
+cameraCamera2Pipe = "1.6.0-beta01"
 
 [libraries]
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
@@ -41,6 +43,7 @@ org-eclipse-paho-android-service = { module = "org.eclipse.paho:org.eclipse.paho
 org-eclipse-paho-client-mqttv3 = { module = "org.eclipse.paho:org.eclipse.paho.client.mqttv3", version.ref = "orgEclipsePahoClientMqttv3" }
 paho-mqtt-android = { module = "com.github.hannesa2:paho.mqtt.android", version.ref = "pahoMqttAndroid" }
 service = { module = "info.mqtt.android:service", version.ref = "service" }
+viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
