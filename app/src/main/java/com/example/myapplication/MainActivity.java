@@ -88,6 +88,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        // Example: Load Dashboard on Startup
+        // Instead of R.id.fragment_container, use the actual ID in your layout
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.nav_host_fragment_content_main, new DashboardFragment())
+//                .commit();
        // setupDynamicColumns();
     }
 

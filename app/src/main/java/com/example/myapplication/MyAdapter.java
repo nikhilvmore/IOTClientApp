@@ -53,14 +53,23 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         // Bind the data from the MyData object to the TextViews
         // We use String.valueOf() to convert numbers to strings
-        holder.tvMachine.setText(data.getMachineName());
-        holder.tvTemp.setText(String.valueOf(data.getTemperature()));
-        holder.tvSpeed.setText(String.valueOf(data.getSpeed()));
-        holder.tvPower.setText(String.valueOf(data.getElectricityConsumption()));
-
-        // Format the Unix timestamp (long) into a human-readable date string
-        String formattedDate = sdf.format(new Date(data.getTimestamp() * 1000L));
-        holder.tvTimestamp.setText(formattedDate);
+        if (holder.tvMachine != null && data != null) {
+            holder.tvMachine.setText(data.getMachineName());
+        }
+        if (holder.tvTemp != null && data != null) {
+            holder.tvTemp.setText(String.valueOf(data.getTemperature()));
+        }
+        if (holder.tvSpeed != null && data != null) {
+            holder.tvSpeed.setText(String.valueOf(data.getSpeed()));
+        }
+        if (holder.tvPower != null && data != null) {
+            holder.tvPower.setText(String.valueOf(data.getElectricityConsumption()));
+        }
+        if (holder.tvTimestamp != null && data != null) {
+            // Format the Unix timestamp (long) into a human-readable date string
+            String formattedDate = sdf.format(new Date(data.getTimestamp() * 1000L));
+            holder.tvTimestamp.setText(formattedDate);
+        }
     }
 
     public void updateData(List<MyData> newData) {

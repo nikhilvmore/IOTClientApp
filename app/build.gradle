@@ -81,13 +81,7 @@ dependencies {
 
         // Ensure you also have ViewPager2
     implementation libs.viewpager2
-
-
-
-
-
-
-
+    implementation libs.mpandroidchart
 
 
 

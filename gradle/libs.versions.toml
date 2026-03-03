@@ -11,6 +11,7 @@ material = "1.12.0"
 constraintlayout = "2.2.1"
 lifecycleLivedataKtx = "2.9.2"
 lifecycleViewmodelKtx = "2.9.2"
+mpandroidchart = "v3.1.0"
 navigationFragment = "2.9.2"
 navigationUi = "2.9.2"
 nettyAll = "4.x.x"
@@ -21,6 +22,7 @@ pahoMqttAndroid = "3.3.5"
 service = "1.1.4"
 viewpager2 = "1.1.0"
 cameraCamera2Pipe = "1.6.0-beta01"
+pdfInk = "1.0.0-alpha13"
 
 [libraries]
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
@@ -34,6 +36,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpandroidchart" }
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 netty-all = { module = "io.netty:netty-all" }
